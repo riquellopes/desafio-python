@@ -18,11 +18,11 @@ setup-local: setup
 
 test: clean
 	 TESTING=True\
+	 DESAFIO_SECRET_KEY="desafio_python"\
 	 PYTHONPATH=. ${PYTEST} tests/ -s -r a --color=yes -vvv
 
 test-cov: clean
-	TESTING=True
-	PYTHONPATH=. ${PYTEST} tests/ --cov=app
+	PYTHONPATH=. ${PYTEST} tests/ --cov=app -s
 
 run: clean
 	PYTHONPATH=. ${PYTHON} run.py
