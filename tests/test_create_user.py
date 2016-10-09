@@ -1,7 +1,7 @@
 import json
 
 
-def test_should_be_geted_a_valid_dict(test_client, mocker):
+def test_should_be_returned_a_valid_dict(test_client, mocker):
     os = mocker.patch("app.models.os")
     os.environ.get.return_value = "desafio_python"
 
@@ -36,7 +36,7 @@ def test_should_be_returned_error_message(test_client, mocker):
     }
     response = test_client.post("/user", data=json.dumps(data), content_type='application/json')
 
-    assert response.status_code == 412
+    assert response.status_code == 422
 
     data = json.loads(response.data.decode('utf-8'))
-    assert data['email'][0] == "E-mail já existente"
+    assert data['messages']['email'][0] == "E-mail já existente"
