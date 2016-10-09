@@ -1,0 +1,2 @@
+class ExceptionCloseTime(Exception):
+    pass

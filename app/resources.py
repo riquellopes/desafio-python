@@ -4,6 +4,7 @@ from flask_restful import Resource
 from webargs.flaskparser import use_args
 from app.schemas import UserSchema, UserLoginRequestSchema
 from app.db import db
+from app.decorators import token_required
 
 
 def default_return(user):
@@ -34,3 +35,10 @@ class UserLoginResource(Resource):
         except:
             return make_response(
                 jsonify(dict(mensagem="Usuário e/ou senha inválidos")), 401)
+
+
+class UserProfileResource(Resource):
+
+    @token_required
+    def get(self, user):
+        return None
