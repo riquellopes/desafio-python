@@ -4,3 +4,4 @@ Flask-SQLAlchemy==2.1
 PyJWT==1.4.2
 marshmallow==2.10.3
 marshmallow-sqlalchemy==0.11.0
+webargs==1.4.0
