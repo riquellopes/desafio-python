@@ -6,6 +6,7 @@ from app.api import db
 @pytest.fixture(scope='session')
 def app(request):
     ctx = application.app_context()
+    ctx.app.config['TESTING'] = True
     ctx.push()
 
     def teardown():
@@ -23,3 +24,10 @@ def test_client(app):
 @pytest.fixture(scope='session', autouse=True)
 def build_db(app):
     db.create_all()
+
+
+@pytest.fixture(scope='function', autouse=True)
+def rollback(app, request):
+    def fin():
+        db.session.rollback()
+    request.addfinalizer(fin)
