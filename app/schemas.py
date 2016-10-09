@@ -1,11 +1,11 @@
 from marshmallow import fields, Schema, validates, ValidationError
 from marshmallow_sqlalchemy import ModelSchema
 
-from app.models import User, Phone
+from app.models import User
 from app.db import db
 
 
-class UserSchema(ModelSchema):
+class UserCreateResponseSchema(ModelSchema):
     class Meta:
         model = User
         sqla_session = db.session
@@ -18,22 +18,20 @@ class UserSchema(ModelSchema):
             raise ValidationError("E-mail já existente")
 
 
-class PhoneSchema:
-    class Meta:
-        model = Phone
-        sqla_session = db.session
-
-
-class PhonePostSchema(Schema):
+class PhoneCreateRequestSchema(Schema):
     number = fields.String()
     ddd = fields.String()
 
 
-class UserPostSchema(Schema):
+class UserCreateResquestSchema(Schema):
     name = fields.String()
     email = fields.String()
     password = fields.String()
-    phones = fields.Nested(PhonePostSchema, many=True)
+    phones = fields.Nested(PhoneCreateRequestSchema, many=True)
 
 
-user_schema = UserSchema()
+class UserLoginRequestSchema(ModelSchema):
+
+    class Meta:
+        model = User
+        sqla_session = db.session
