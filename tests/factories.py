@@ -1,6 +1,6 @@
-from factory import RelatedFactory
+from factory import RelatedFactory, lazy_attribute
 from factory.alchemy import SQLAlchemyModelFactory as Factory
-from app.models import User, Phone
+from app.models import User, Phone, jwt_encode
 from app.db import db
 
 
@@ -20,6 +20,9 @@ class UserFactory(Factory):
 
     name = "Henrique Lopes"
     email = "henrique@lopes.org"
-    password = "lopes2"
-
+    password = User.to_encrypt("lopes2")
     phones = RelatedFactory(PhoneFactory, 'user')
+
+    @lazy_attribute
+    def token(self):
+        return jwt_encode(self.email)
