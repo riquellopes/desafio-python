@@ -6,6 +6,10 @@ from app.schemas import UserSchema, UserLoginRequestSchema
 from app.db import db
 
 
+def default_return(user):
+    return UserSchema(only=("id", "created", "modified", "last_login", "token")).dumps(user).data
+
+
 class UserCreateResource(Resource):
 
     @use_args(UserSchema(strict=True))
@@ -16,8 +20,7 @@ class UserCreateResource(Resource):
         db.session.add(user)
         db.session.commit()
 
-        data = UserSchema(only=("id", "created", "modified", "last_login", "token")).dumps(user).data
-        return make_response(data, http.HTTPStatus.CREATED)
+        return make_response(default_return(user), http.HTTPStatus.CREATED)
 
 
 class UserLoginResource(Resource):
@@ -27,9 +30,7 @@ class UserLoginResource(Resource):
         try:
             user = args.to_authorize()
             user.update_last_login()
-            data = UserSchema(
-                only=("id", "created", "modified", "last_login", "token")).dumps(user).data
-            return make_response(data, http.HTTPStatus.ACCEPTED)
+            return make_response(default_return(user), http.HTTPStatus.ACCEPTED)
         except:
             return make_response(
                 jsonify(dict(mensagem="Usuário e/ou senha inválidos")), 401)
