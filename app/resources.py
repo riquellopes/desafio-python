@@ -41,4 +41,4 @@ class UserProfileResource(Resource):
 
     @token_required
     def get(self, user):
-        return None
+        return make_response(default_return(user), http.HTTPStatus.OK)
