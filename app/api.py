@@ -6,7 +6,6 @@ from app.resources import UserCreateResource, UserLoginResource, UserProfileReso
 
 def setup_app():
     db.init_app(application)
-    db.create_all()
 
     api = Api(application)
 
@@ -16,4 +15,10 @@ def setup_app():
 
     return application
 
+
 app = setup_app()
+
+
+@app.before_request
+def berore():
+    db.create_all()
