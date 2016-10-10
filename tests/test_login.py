@@ -14,7 +14,7 @@ def test_should_be_returned_status_401_when_not_a_json_application(test_client, 
 
     response = test_client.post("/login", data=json.dumps(data))
 
-    assert response.status_code == 401
+    assert response.status_code == 422
 
 
 def test_should_be_returned_status_202(test_client, mocker):
@@ -46,5 +46,4 @@ def test_should_be_returned_status_401(test_client, mocker):
     assert response.status_code == 401
 
     data = json.loads(response.data.decode('utf-8'))
-
     assert data['mensagem'] == "Usuário e/ou senha inválidos"

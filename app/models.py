@@ -15,9 +15,9 @@ str_token = lambda token: bytes(token, "ascii")
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(100))
-    email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(100))
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     created = db.Column(db.DateTime, default=datetime.now())
     modified = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
     last_login = db.Column(db.DateTime, default=datetime.now())

@@ -39,4 +39,17 @@ def test_should_be_returned_error_message(test_client, mocker):
     assert response.status_code == 422
 
     data = json.loads(response.data.decode('utf-8'))
-    assert data['messages']['email'][0] == "E-mail já existente"
+    assert data['mensagem'] == "E-mail já existente"
+
+
+def test_should_be_get_error_message_when_no_data(test_client, mocker):
+    os = mocker.patch("app.models.os")
+    os.environ.get.return_value = "desafio_python"
+
+    response = test_client.post("/user", content_type='application/json')
+
+    assert response.status_code == 422
+
+    data = json.loads(response.data.decode('utf-8'))
+
+    assert data['mensagem'] == "Algumas informações não foram preenchidas."
