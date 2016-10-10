@@ -13,7 +13,7 @@ def default_return(user):
 
 class UserCreateResource(Resource):
 
-    @use_args(UserSchema(strict=True))
+    @use_args(UserSchema(strict=True), locations=("json", ))
     # @TODO o padrão de saida de mensagem é {"mensagem": "descrição do erro"}
     def post(self, args):
         user = args
@@ -26,7 +26,7 @@ class UserCreateResource(Resource):
 
 class UserLoginResource(Resource):
 
-    @use_args(UserLoginRequestSchema(strict=True))
+    @use_args(UserLoginRequestSchema(strict=True), locations=("json", ))
     def post(self, args):
         try:
             user = args.to_authorize()
