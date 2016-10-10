@@ -1,7 +1,7 @@
 import os
 import jwt
+import hashlib
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 from app.db import db
 from sqlalchemy import event
 from app.exceptions import ExceptionCloseTime
@@ -25,21 +25,23 @@ class User(db.Model):
     phones = db.relationship('Phone', backref="user", lazy='dynamic')
 
     def to_authorize(self):
-        user = db.session.query(User).filter(User.email == self.email).one()
+        user = db.session.query(User).filter(User.email == self.email).first()
 
-        if not user:
+        if user is None:
             raise Exception("Usuário e/ou senha inválidos")
 
-        if not self._check_password_hash(user.password):
+        if not self._check_password(user.password, self.password):
             raise Exception("Usuário e/ou senha inválidos")
         return user
 
     @classmethod
-    def to_encrypt(self, password):
-        return generate_password_hash(password.encode())
+    def to_encrypt(cls, password):
+        return hashlib.sha1(password.encode()).hexdigest()
 
-    def _check_password_hash(self, password):
-        return check_password_hash(password, self.password)
+    def _check_password(self, upassword, password):
+        if not self.id:
+            password = self.to_encrypt(password)
+        return upassword == password
 
     def update_last_login(self):
         self.last_login = db.func.current_timestamp()

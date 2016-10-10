@@ -17,7 +17,7 @@ def test_should_be_returned_status_202(test_client, mocker):
     assert response.status_code == 202
 
 
-def test_should_be_retournd_status_401(test_client, mocker):
+def test_should_be_returned_status_401(test_client, mocker):
     os = mocker.patch("app.models.os")
     os.environ.get.return_value = "desafio_python"
 

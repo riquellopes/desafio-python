@@ -7,7 +7,7 @@ from app.models import User
 from app.exceptions import ExceptionCloseTime
 
 
-def build_response(message, status):
+def build_response(message, status=http.HTTPStatus.OK):
     return make_response(jsonify({
         "mensagem": message}
     ), status)
@@ -22,10 +22,10 @@ def token_required(func):
             - Caso o token exista, buscar o usuário pelo id passado no path e comparar se o token no modelo
               é igual ao token passado no header. OK
             - Caso não seja o mesmo token, retornar erro com status apropriado e mensagem "Não autorizado" OK
-            - Caso seja o mesmo token, verificar se o último login foi a MENOS que 30 minutos atrás.
+            - Caso seja o mesmo token, verificar se o último login foi a MENOS que 30 minutos atrás. OK
             - Caso não seja a MENOS que 30 minutos atrás, retornar erro com status apropriado com mensagem
-              "Sessão inválida".
-            - Caso tudo esteja ok, retornar o usuário no mesmo formato do retorno do Login.
+              "Sessão inválida". OK
+            - Caso tudo esteja ok, retornar o usuário no mesmo formato do retorno do Login. OK
         """
 
         token = request.headers.get("X-TOKEN", None)
