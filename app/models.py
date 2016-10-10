@@ -52,8 +52,9 @@ class User(db.Model):
         return db.session.query(User).filter(User.token == token).one()
 
     def is_valid_login(self):
-        if ((datetime.now() - self.last_login).total_seconds() / 60.0) > 30:
+        if abs((datetime.now() - self.last_login).total_seconds() / 60.0) > 30:
             raise ExceptionCloseTime("Tempo encerrado.")
+        return True
 
 
 @event.listens_for(User, "before_insert")

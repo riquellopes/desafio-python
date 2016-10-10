@@ -1,4 +1,3 @@
-# from datetime import datetime, timedelta
 import json
 from .factories import UserFactory
 from app.decorators import User
@@ -28,8 +27,6 @@ def test_should_be_returned_status_403_for_time_closed(test_client, mocker):
 
     is_valid_login = mocker.patch.object(User, "is_valid_login")
     is_valid_login.side_effect = ExceptionCloseTime("Tempo encerrado")
-
-    # datetime.now() + timedelta(hours=9)
 
     user = UserFactory(email="time@end.com")
 
