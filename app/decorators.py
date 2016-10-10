@@ -39,7 +39,7 @@ def token_required(func):
             kwargs.update({
                 "user": user
             })
-            func(*args, **kwargs)
+            return func(*args, **kwargs)
         except NoResultFound:
             return build_response("Não autorizado", http.HTTPStatus.UNAUTHORIZED)
         except ExceptionCloseTime:

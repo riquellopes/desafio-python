@@ -10,6 +10,8 @@ from app.exceptions import ExceptionCloseTime
 def jwt_encode(email):
     return jwt.encode({"email": email}, os.environ.get("DESAFIO_SECRET_KEY"), algorithm='HS256').strip()
 
+str_token = lambda token: bytes(token, "ascii")
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -46,7 +48,7 @@ class User(db.Model):
 
     @classmethod
     def find_by_token(cls, token):
-        token = bytes(token, "ascii")
+        token = str_token(token)
         return db.session.query(User).filter(User.token == token).one()
 
     def is_valid_login(self):

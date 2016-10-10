@@ -3,6 +3,7 @@ import json
 from .factories import UserFactory
 from app.decorators import User
 from app.exceptions import ExceptionCloseTime
+from app.models import str_token
 
 
 def test_when_to_sended_a_empty_token_service_respose_401(test_client, mocker):
@@ -52,3 +53,7 @@ def test_when_header_x_token_is_valid_status_code_200(test_client, mocker):
         "/profile", headers={"X-TOKEN": user.token})
 
     assert response.status_code == 200
+    data = json.loads(response.data.decode('utf-8'))
+
+    assert user.id == data["id"]
+    assert user.token == str_token(data["token"])
