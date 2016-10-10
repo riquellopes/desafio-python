@@ -14,7 +14,7 @@ def default_return(user):
 class UserCreateResource(Resource):
 
     @use_args(UserSchema(strict=True))
-    # @TODO o padrão de saida de mensagem é {"menssage": "descrição do erro"}
+    # @TODO o padrão de saida de mensagem é {"mensagem": "descrição do erro"}
     def post(self, args):
         user = args
 
